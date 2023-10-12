@@ -15,7 +15,7 @@ export default function TextForm(props) {
   };
 
   const handleClearClick = () => {
-    let newText = " ";
+    let newText = "";
     setText(newText);
     props.showAlert(" Cleared text!", "success");
   };
@@ -40,21 +40,22 @@ export default function TextForm(props) {
             className="form-control"
             value={text}
             onChange={handleOnChange}
+            placeholder="enter something"
             style={{
-              backgroundColor: props.mode === "dark" ? "gray" : "white",
+              backgroundColor: props.mode === "dark" ? "rgb(48 110 151)" : "white",
               color: props.mode === "dark" ? "white" : "#12486B",
             }}
             id="myBox"
             rows="8"
           ></textarea>
         </div>
-        <button className="btn btn-primary mx-3" onClick={handleUpClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-3 my-1" onClick={handleUpClick}>
           Convert to Uppercase
         </button>
-        <button className="btn btn-primary mx-3" onClick={handleLoClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-3 my-1" onClick={handleLoClick}>
           Convert to Lowercase
         </button>
-        <button className="btn btn-primary mx-3" onClick={handleClearClick}>
+        <button disabled={text.length === 0} className="btn btn-primary mx-3 my-1" onClick={handleClearClick}>
           Clear All
         </button>
       </div>
@@ -66,15 +67,22 @@ export default function TextForm(props) {
       >
         <h2>Your text summery</h2>
         <p>
-          {text.split(" ").length} words and {text.length} characters
+          {
+            text.split(/\s+/).filter((element) => {
+              return element.length !== 0;
+            }).length
+          }{" "}
+          words and {text.length} characters
         </p>
-        <p>{0.008 * text.split(" ").length} minutes to read</p>
-        <h1>Priview</h1>
         <p>
-          {text.length > 0
-            ? text
-            : "Enter somthing in the textbox above to preview it here"}
+          {0.008 *
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length}{" "}
+          minutes to read
         </p>
+        <h1>Priview</h1>
+        <p>{text.length > 0 ? text : "Enter somthing in the textbox above to preview it here"}</p>
       </div>
     </>
   );
